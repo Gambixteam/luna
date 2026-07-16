@@ -1,13 +1,16 @@
 import 'server-only';
 import Stripe from 'stripe';
-import { getServerEnv } from '@/lib/env';
+
+function required(name: string) {
+  const value = process.env[name];
+  if (!value) throw new Error(`${name} is not configured.`);
+  return value;
+}
 
 export function createStripeClient() {
-  return new Stripe(getServerEnv().STRIPE_SECRET_KEY, {
-    appInfo: { name: 'Luna', version: '0.1.0' },
-  });
+  return new Stripe(required('STRIPE_SECRET_KEY'), { appInfo: { name: 'Luna by Gambix', version: '0.2.0' } });
 }
 
 export function getStripeWebhookSecret() {
-  return getServerEnv().STRIPE_WEBHOOK_SECRET;
+  return required('STRIPE_WEBHOOK_SECRET');
 }
