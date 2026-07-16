@@ -1,6 +1,7 @@
 {
   "crons": [
     { "path": "/api/cron/usage-reconciliation", "schedule": "0 3 * * *" },
+    { "path": "/api/cron/notifications", "schedule": "0 12 * * *" },
     { "path": "/api/cron/monthly-reports", "schedule": "0 9 1 * *" }
   ]
 }
