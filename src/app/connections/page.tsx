@@ -17,10 +17,11 @@ export default function ConnectionsPage() {
     if (!session.data.session?.user) return void (window.location.href = '/login');
     const membership = await supabase.from('organization_memberships').select('organization_id').eq('user_id', session.data.session.user.id).limit(1).maybeSingle();
     if (!membership.data) return void (window.location.href = '/dashboard');
-    const site = await supabase.from('sites').select('id,domain').eq('organization_id', membership.data.organization_id).limit(1).maybeSingle();
-    if (!site.data) return;
-    setContext({ organizationId: membership.data.organization_id, siteId: site.data.id });
-    setWordpress((value) => ({ ...value, wordpressUrl: site.data.domain }));
+    const siteResult = await supabase.from('sites').select('id,domain').eq('organization_id', membership.data.organization_id).limit(1).maybeSingle();
+    const activeSite = siteResult.data;
+    if (!activeSite) return;
+    setContext({ organizationId: membership.data.organization_id, siteId: activeSite.id });
+    setWordpress((value) => ({ ...value, wordpressUrl: activeSite.domain }));
     const fileRows = await supabase.from('files').select('*').eq('organization_id', membership.data.organization_id).order('created_at', { ascending: false });
     setFiles(fileRows.data ?? []);
   }
