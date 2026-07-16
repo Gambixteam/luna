@@ -1,5 +1,6 @@
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
 import type { NextRequest } from 'next/server';
+import { getPublicSupabaseConfig } from './public-config';
 
 export type RequestContext = {
   supabase: SupabaseClient;
@@ -9,11 +10,9 @@ export type RequestContext = {
 };
 
 export async function authenticateRequest(request: NextRequest): Promise<RequestContext> {
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+  const { supabaseUrl, supabaseAnonKey } = getPublicSupabaseConfig();
   const authorization = request.headers.get('authorization');
   const token = authorization?.startsWith('Bearer ') ? authorization.slice(7) : null;
-  if (!supabaseUrl || !supabaseAnonKey) throw new Response('Supabase is not configured.', { status: 503 });
   if (!token) throw new Response('Authentication required.', { status: 401 });
 
   const supabase = createClient(supabaseUrl, supabaseAnonKey, {
