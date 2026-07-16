@@ -1,0 +1,86 @@
+:root {
+  --ink: #0a0a0a;
+  --muted: #686868;
+  --line: #d9d9d4;
+  --purple: #111111;
+  --purple-dark: #000000;
+  --soft: #efefeb;
+  background: #f5f5f1;
+}
+
+body {
+  background: #f5f5f1;
+  color: #0a0a0a;
+}
+
+.brand-mark {
+  background: #0a0a0a;
+  border: 1px solid #2b2b2b;
+  box-shadow: none;
+}
+
+.nav-links a:hover,
+.hero h1 em,
+.text-link span,
+.section-label,
+.feature-arrow,
+.footer-inner > a:last-child {
+  color: #0a0a0a;
+}
+
+.button,
+.plan-grid .featured a {
+  background: #0a0a0a;
+  color: #ffffff;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.14);
+}
+
+.button:hover {
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
+}
+
+.eyebrow {
+  border-color: #d6d6d1;
+  color: #3e3e3e;
+}
+
+.eyebrow span,
+.proof-row span::before {
+  background: #0a0a0a;
+  color: #0a0a0a;
+  box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-preview {
+  box-shadow: 0 35px 100px rgba(0, 0, 0, 0.14);
+}
+
+.preview-grid aside,
+.process,
+.preview-heading button,
+.plan-grid a {
+  background: #0a0a0a;
+}
+
+.menu.active {
+  background: #282828;
+}
+
+.section-label.light,
+.process li > span {
+  color: #ffffff;
+}
+
+.process li {
+  border-color: #343434;
+}
+
+.plan-grid .featured {
+  border-color: #0a0a0a;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.1);
+}
+
+.popular {
+  background: #ededE8;
+  color: #111111;
+}
