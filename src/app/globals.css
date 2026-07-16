@@ -1,0 +1,9 @@
+:root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; background: #08111f; color: #f8fafc; }
+body { margin: 0; }
+a { color: inherit; }
+main { min-height: 100vh; padding: 4rem; background: radial-gradient(circle at top left, #1d4ed8 0, transparent 28rem), #08111f; }
+.card { max-width: 58rem; border: 1px solid rgba(148, 163, 184, .3); border-radius: 24px; padding: 2rem; background: rgba(15, 23, 42, .78); box-shadow: 0 24px 90px rgba(0,0,0,.35); }
+.badge { display: inline-flex; border: 1px solid rgba(125, 211, 252, .45); color: #bae6fd; border-radius: 999px; padding: .35rem .75rem; font-size: .85rem; }
+h1 { font-size: clamp(2.4rem, 5vw, 4.8rem); line-height: 1; margin: 1rem 0; }
+p { color: #cbd5e1; font-size: 1.1rem; line-height: 1.75; }
+ul { color: #dbeafe; line-height: 1.9; }

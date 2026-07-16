@@ -1,0 +1,42 @@
+{
+  "name": "luna",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "deploy:preview": "vercel",
+    "deploy:production": "vercel --prod",
+    "supabase:link": "supabase link",
+    "supabase:db:push": "supabase db push",
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/stripe/webhook"
+  },
+  "dependencies": {
+    "@ai-sdk/react": "4.0.32",
+    "@openrouter/ai-sdk-provider": "3.0.0",
+    "@supabase/supabase-js": "2.110.7",
+    "ai": "7.0.29",
+    "next": "16.2.10",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "stripe": "22.3.2",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "eslint": "^9.39.0",
+    "eslint-config-next": "16.2.10",
+    "typescript": "^6.0.3",
+    "vitest": "^4.0.15"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
