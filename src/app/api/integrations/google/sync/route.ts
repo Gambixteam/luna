@@ -26,7 +26,6 @@ export async function POST(request: NextRequest) {
     const periodStart = isoDate(start); const periodEnd = isoDate(end);
     const result: Record<string, unknown> = {};
 
-    // Search Console: discover accessible properties and automatically query the best domain match.
     try {
       const sites = await googleJson('https://www.googleapis.com/webmasters/v3/sites', accessToken);
       const entries = (sites.siteEntry ?? []) as Array<{ siteUrl: string; permissionLevel: string }>;
@@ -46,10 +45,9 @@ export async function POST(request: NextRequest) {
       result.searchConsole = { error: error instanceof Error ? error.message : 'Sync failed' };
     }
 
-    // GA4: discover properties. Auto-sync only when the selection is unambiguous.
     try {
       const summaries = await googleJson('https://analyticsadmin.googleapis.com/v1beta/accountSummaries?pageSize=200', accessToken);
-      const properties = ((summaries.accountSummaries ?? []) as Array<Record<string, any>>).flatMap((account) => ((account.propertySummaries ?? []) as Array<Record<string, any>>).map((property) => ({ ...property, account: account.account, accountDisplayName: account.displayName })));
+      const properties: Array<Record<string, any>> = ((summaries.accountSummaries ?? []) as Array<Record<string, any>>).flatMap((account) => ((account.propertySummaries ?? []) as Array<Record<string, any>>).map((property) => ({ ...property, account: account.account, accountDisplayName: account.displayName })));
       const integration = await admin.from('integrations').select('metadata').eq('organization_id', context.organizationId).eq('site_id', site.id).eq('provider', 'google_analytics_4').maybeSingle();
       const savedProperty = (integration.data?.metadata as Record<string, any> | undefined)?.selectedProperty;
       const selected = properties.find((item) => item.property === savedProperty) ?? (properties.length === 1 ? properties[0] : null);
@@ -66,7 +64,6 @@ export async function POST(request: NextRequest) {
       result.ga4 = { error: error instanceof Error ? error.message : 'Sync failed' };
     }
 
-    // Google Business Profile: discover accounts and locations, then pull current profile and performance data when unambiguous.
     try {
       const accountsPayload = await googleJson('https://mybusinessaccountmanagement.googleapis.com/v1/accounts', accessToken);
       const accounts = (accountsPayload.accounts ?? []) as Array<Record<string, any>>;
