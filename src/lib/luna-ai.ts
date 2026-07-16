@@ -7,6 +7,7 @@ const CREDIT_COSTS: Record<string, number> = {
   content_brief: 5,
   content_draft: 8,
   gbp_post: 3,
+  review_response: 2,
   monthly_report: 10,
 };
 
