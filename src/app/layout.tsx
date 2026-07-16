@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import './luna-app.css';
+import './google-setup.css';
 
 export const metadata: Metadata = {
   title: 'Luna by Gambix | Local Visibility Operating System',
