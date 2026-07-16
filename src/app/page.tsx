@@ -47,7 +47,7 @@ export default function HomePage() {
                 <article><span>Qualified clicks</span><strong>1,284</strong><small>↑ 24.2% this month</small></article>
                 <article><span>Local presence</span><strong>Strong</strong><small>8 opportunities open</small></article>
               </div>
-              <div className="chart-card"><div><span>Organic growth</span><strong>Visibility trend</strong></div><svg viewBox="0 0 720 180" role="img" aria-label="Growth chart"><defs><linearGradient id="fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stopColor="#6d5dfc" stopOpacity=".35"/><stop offset="100%" stopColor="#6d5dfc" stopOpacity="0"/></linearGradient></defs><path d="M0 150 C80 145 90 122 160 126 S250 100 310 108 S410 76 470 82 S580 35 720 28 L720 180 L0 180 Z" fill="url(#fill)"/><path d="M0 150 C80 145 90 122 160 126 S250 100 310 108 S410 76 470 82 S580 35 720 28" fill="none" stroke="#7c6cff" strokeWidth="5" strokeLinecap="round"/></svg></div>
+              <div className="chart-card"><div><span>Organic growth</span><strong>Visibility trend</strong></div><svg viewBox="0 0 720 180" role="img" aria-label="Growth chart"><defs><linearGradient id="fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stopColor="#111111" stopOpacity=".22"/><stop offset="100%" stopColor="#111111" stopOpacity="0"/></linearGradient></defs><path d="M0 150 C80 145 90 122 160 126 S250 100 310 108 S410 76 470 82 S580 35 720 28 L720 180 L0 180 Z" fill="url(#fill)"/><path d="M0 150 C80 145 90 122 160 126 S250 100 310 108 S410 76 470 82 S580 35 720 28" fill="none" stroke="#111111" strokeWidth="5" strokeLinecap="round"/></svg></div>
             </div>
           </div>
         </div>
