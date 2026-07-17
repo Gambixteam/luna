@@ -5,6 +5,8 @@ import { getBrowserSupabase } from '@/lib/supabase/browser';
 
 type Props = { mode: 'login' | 'signup' };
 
+const AUTH_CALLBACK_URL = 'https://luna-gambix1.vercel.app/auth/callback';
+
 export function AuthForm({ mode }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,9 +19,9 @@ export function AuthForm({ mode }: Props) {
     try {
       const supabase = await getBrowserSupabase();
       if (mode === 'signup') {
-        const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { full_name: fullName }, emailRedirectTo: `${window.location.origin}/auth/callback` } });
+        const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { full_name: fullName }, emailRedirectTo: AUTH_CALLBACK_URL } });
         if (error) throw error;
-        if (data.session) window.location.href = '/dashboard'; else setMessage('Check your email to confirm your Luna account.');
+        if (data.session) window.location.href = '/dashboard'; else setMessage('Check your email to confirm your Luna account. The confirmation link will return you to Luna.');
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
@@ -33,7 +35,7 @@ export function AuthForm({ mode }: Props) {
     setBusy(true); setMessage('');
     try {
       const supabase = await getBrowserSupabase();
-      const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: `${window.location.origin}/auth/callback` } });
+      const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: AUTH_CALLBACK_URL } });
       if (error) throw error;
     } catch (error) { setMessage(error instanceof Error ? error.message : 'Google sign-in is not configured.'); setBusy(false); }
   }
