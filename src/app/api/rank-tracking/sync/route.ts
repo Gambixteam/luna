@@ -2,6 +2,8 @@ import { NextResponse,type NextRequest } from 'next/server';
 import { z } from 'zod';
 import { authenticateRequest,assertEditor,requireSite } from '@/lib/supabase/request';
 
+type RankChange={keyword:string|null;change:number;current:number;previous:number};
+
 export async function POST(request:NextRequest){
  try{
   const context=await authenticateRequest(request);assertEditor(context.role);const body=z.object({siteId:z.string().uuid(),limit:z.number().int().min(1).max(200).default(100)}).parse(await request.json());const site=await requireSite(context,body.siteId);
@@ -24,8 +26,8 @@ export async function POST(request:NextRequest){
   }
   await context.supabase.from('rank_snapshots').delete().eq('site_id',site.id).eq('source','gsc').eq('captured_on',snapshot.data.period_end);
   const saved=await context.supabase.from('rank_snapshots').insert(targetRows).select('*,keyword_targets(keyword)');if(saved.error)throw new Error(saved.error.message);
-  const topGainers=[];const topDecliners=[];
-  for(const current of saved.data??[]){const previous=await context.supabase.from('rank_snapshots').select('organic_position,captured_on').eq('keyword_id',current.keyword_id).lt('captured_on',current.captured_on).order('captured_on',{ascending:false}).limit(1).maybeSingle();if(previous.data?.organic_position&&current.organic_position){const change=Number(previous.data.organic_position)-Number(current.organic_position);const entry={keyword:current.keyword_targets?.keyword,change,current:Number(current.organic_position),previous:Number(previous.data.organic_position)};if(change>0)topGainers.push(entry);if(change<0)topDecliners.push(entry)}}
+  const topGainers:RankChange[]=[];const topDecliners:RankChange[]=[];
+  for(const current of saved.data??[]){const previous=await context.supabase.from('rank_snapshots').select('organic_position,captured_on').eq('keyword_id',current.keyword_id).lt('captured_on',current.captured_on).order('captured_on',{ascending:false}).limit(1).maybeSingle();if(previous.data?.organic_position&&current.organic_position){const change=Number(previous.data.organic_position)-Number(current.organic_position);const related=current.keyword_targets as {keyword?:string}|null;const entry:RankChange={keyword:related?.keyword??null,change,current:Number(current.organic_position),previous:Number(previous.data.organic_position)};if(change>0)topGainers.push(entry);if(change<0)topDecliners.push(entry)}}
   return NextResponse.json({capturedOn:snapshot.data.period_end,count:saved.data?.length??0,topGainers:topGainers.sort((a,b)=>b.change-a.change).slice(0,10),topDecliners:topDecliners.sort((a,b)=>a.change-b.change).slice(0,10)});
  }catch(error){if(error instanceof Response)return NextResponse.json({error:error.statusText||'Rank sync failed.'},{status:error.status});return NextResponse.json({error:error instanceof Error?error.message:'Rank sync failed.'},{status:400});}
 }
