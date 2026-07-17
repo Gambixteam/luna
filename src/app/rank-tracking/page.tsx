@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { authorizedFetch, getBrowserSupabase } from '@/lib/supabase/browser';
 
 type RankRow = Record<string, any>;
+type RankHistory = RankRow & { change: number | null; previous: number | null };
 
 export default function RankTrackingPage() {
   const [siteId, setSiteId] = useState('');
@@ -42,17 +43,17 @@ export default function RankTrackingPage() {
   const latest = rows.filter((row) => row.captured_on === latestDate);
   const topTen = latest.filter((row) => Number(row.organic_position) <= 10).length;
   const average = latest.length ? latest.reduce((total, row) => total + Number(row.organic_position ?? 0), 0) / latest.length : null;
-  const histories = useMemo(() => {
+  const histories = useMemo<RankHistory[]>(() => {
     const byKeyword = new Map<string, RankRow[]>();
     for (const row of rows) {
       const key = row.keyword_id;
       const list = byKeyword.get(key) ?? [];
       list.push(row); byKeyword.set(key, list);
     }
-    return [...byKeyword.values()].map((history) => {
-      const sorted = history.sort((a, b) => String(b.captured_on).localeCompare(String(a.captured_on)));
+    return [...byKeyword.values()].map<RankHistory>((history) => {
+      const sorted = [...history].sort((a, b) => String(b.captured_on).localeCompare(String(a.captured_on)));
       const current = sorted[0]; const previous = sorted[1];
-      return { ...current, change: previous?.organic_position && current?.organic_position ? Number(previous.organic_position) - Number(current.organic_position) : null, previous: previous?.organic_position ?? null };
+      return { ...current, change: previous?.organic_position && current?.organic_position ? Number(previous.organic_position) - Number(current.organic_position) : null, previous: previous?.organic_position ?? null } as RankHistory;
     }).sort((a, b) => Number(a.organic_position ?? 999) - Number(b.organic_position ?? 999));
   }, [rows]);
 
