@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { verifyCronRequest } from '@/lib/cron/auth';
+import { verifyCronSecret } from '@/lib/cron/auth';
 import { serviceClient } from '@/lib/integrations/google';
 
 function escapeHtml(value: string) {
@@ -7,7 +7,7 @@ function escapeHtml(value: string) {
 }
 
 export async function GET(request: NextRequest) {
-  if (!verifyCronRequest(request)) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+  if (!verifyCronSecret(request)) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.REPORT_FROM_EMAIL;
   if (!apiKey || !from) return NextResponse.json({ skipped: true, reason: 'email_not_configured' });
